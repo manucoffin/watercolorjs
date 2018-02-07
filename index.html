@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="script.js"></script>
+    <script src="interface.js"></script>
+
+    <style>
+        canvas {
+            border: solid 1px black;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <label for="input-regularity">Regularity</label>
+        <input type="range" min="1" max="10" id="input-regularity" value="3">
+    </div>
+    
+    <div>
+        <label for="input-sides">Sides</label>
+        <input type="range" min="3" max="10" id="input-sides" value="5">
+    </div>
+
+    <div>
+        <label for="input-spread">Spread</label>
+        <input type="range" min="10" max="50" id="input-spread" value="20">
+    </div>
+    
+    <div>
+        <label for="input-details">Details</label>
+        <input type="range" min="1" max="10" id="input-details" value="3">
+    </div>
+    
+    <div>
+        <label for="input-color">Color</label>
+        <input type="color" id="input-color">
+    </div>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+    
+</body>
+</html>
