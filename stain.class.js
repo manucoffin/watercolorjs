@@ -5,7 +5,7 @@ class Stain {
         this.id = id;
         this.ctx = ctx;
         this.canvas = canvas;
-        this.origin = {x: 250, y: 250};
+        this.origin = {x: 500, y: 250};
         this.radius = 100;
         this.sides = 5;
         this.rotateAngle = 0;
@@ -25,12 +25,12 @@ class Stain {
         document.getElementById('managers').innerHTML += `
             <div data-classid=`+this.id+`>
                 <div>
-                    <label for="input-originx">originx</label>
+                    <label for="input-originx">X</label>
                     <input type="range" name="originx" min="0" max="`+Math.round(this.canvas.width)+`" id="input-`+this.id+`-originx" value="`+Math.round(this.canvas.width/2)+`">
                 </div>
                 
                 <div>
-                    <label for="input-originy">originy</label>
+                    <label for="input-originy">Y</label>
                     <input type="range" name="originy" min="0" max="`+Math.round(this.canvas.height)+`" id="input-`+this.id+`-originy" value="`+Math.round(this.canvas.height/2)+`">
                 </div>
 
@@ -89,7 +89,8 @@ class Stain {
         }
 
         document.getElementById('input-'+this.id+'-color').addEventListener('input', e => {
-            this.color = e.target.value + '01';
+            const c = hexToRgb(e.target.value);
+            this.color = 'rgba('+c.r+','+c.g+','+c.b+', .01)';
             document.dispatchEvent(this.managerEvent);
         }, false);        
     }

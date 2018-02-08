@@ -3,6 +3,15 @@ window.onload = function() {
     const ctx = canvas.getContext('2d');
     let stainId = 1;
 
+    canvas.width = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
+
+    window.addEventListener('resize', e => {
+        canvas.width = document.body.clientWidth;
+        canvas.height = document.body.clientHeight;
+        refreshCanvas(ctx, canvas, stains);
+    });
+
     document.addEventListener('stainManagerChanged', (e) => { 
         refreshCanvas(ctx, canvas, stains);
     }, false);
