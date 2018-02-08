@@ -1,33 +1,62 @@
 window.onload = function() {
-
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-
-    ctx.translate(canvas.width/2, canvas.height/2);
-
-    // Store the randomness of a shape
-    let randomNumbers = genRdmNumbers(POINTS_BETWEEN_SUMMITS);
 
     let baseParams = {
         ctx: ctx,
         canvas: canvas,
-        radius: 100,
+        origin: {x: 250, y: 150},
+        radius: 150,
         sides: 5,
         rotateAngle: 0,
         offset: 0,
-        randomNumbers: randomNumbers,
-        pointsBetweenSummits: POINTS_BETWEEN_SUMMITS,
+        randomNumbers: genRdmNumbers(10),
+        pointsBetweenSummits: 10,
         regularity: 3,
         spread: 20,
         details: 3,
         color: 'rgba(0, 0, 255, .01)',
         dilution: 80
     }
-
-
-    refreshCanvas(baseParams);
-
     
+    let baseParams2 = {
+        ctx: ctx,
+        canvas: canvas,
+        origin: {x: 325, y: 250},
+        radius: 150,
+        sides: 5,
+        rotateAngle: 0,
+        offset: 0,
+        randomNumbers: genRdmNumbers(10),
+        pointsBetweenSummits: 10,
+        regularity: 3,
+        spread: 20,
+        details: 3,
+        color: 'rgba(255, 0, 0, .01)',
+        dilution: 80
+    }
+
+    let baseParams3 = {
+        ctx: ctx,
+        canvas: canvas,
+        origin: {x: 175, y: 250},
+        radius: 150,
+        sides: 5,
+        rotateAngle: 0,
+        offset: 0,
+        randomNumbers: genRdmNumbers(10),
+        pointsBetweenSummits: 10,
+        regularity: 3,
+        spread: 20,
+        details: 3,
+        color: 'rgba(0, 255, 0, .01)',
+        dilution: 80
+    }
+
+    let stains = [baseParams, baseParams2, baseParams3];
+
+    refreshCanvas(ctx, canvas, stains);
+
 
     const inputSides = document.getElementById('input-sides');
     const inputRadius = document.getElementById('input-radius');

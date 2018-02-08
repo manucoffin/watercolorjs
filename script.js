@@ -1,40 +1,58 @@
-const POINTS_BETWEEN_SUMMITS = 10;
+function refreshCanvas(ctx, canvas, stains) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-function refreshCanvas(baseParams) {
-    const canvas = baseParams.canvas;
-    const ctx = baseParams.ctx;
+    for(let k=0; k<20; k++) {
+        stains.map( (stain) => {
+            const canvas = stain.canvas;
+            const ctx = stain.ctx;
+            ctx.translate(stain.origin.x, stain.origin.y);
 
-    ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
+            let dilutionParams = {
+                ctx: ctx,
+                canvas: canvas,
+                origin: stain.origin,
+                radius: stain.radius * .97,
+                sides: stain.sides,
+                rotateAngle: stain.rotateAngle,
+                offset: stain.offset,
+                randomNumbers: stain.randomNumbers,
+                pointsBetweenSummits: stain.pointsBetweenSummits,
+                regularity: 10,
+                spread: 10,
+                details: 10,
+                color: 'rgba(255, 255, 255, .01)',
+                dilution: stain.dilution
+            }
 
-    let dilutionParams = {
-        ctx: ctx,
-        canvas: canvas,
-        radius: baseParams.radius * .97,
-        sides: baseParams.sides,
-        rotateAngle: baseParams.rotateAngle,
-        offset: baseParams.offset,
-        randomNumbers: baseParams.randomNumbers,
-        pointsBetweenSummits: baseParams.pointsBetweenSummits,
-        regularity: 10,
-        spread: 10,
-        details: 10,
-        color: 'rgba(255, 255, 255, .01)',
-        dilution: baseParams.dilution
+            const polygonLayer = {
+                baseLayer: stain,
+                dilutionLayer: dilutionParams, 
+                basePolygonPoints: generateBasePolygon(stain), 
+                dilutionPolygonPoints: generateBasePolygon(dilutionParams),
+            }
+
+            for(let i=0; i<5; i++) {
+                drawLayer(i, polygonLayer)
+            }
+
+            ctx.translate(-stain.origin.x, -stain.origin.y);
+        });
     }
+}
 
-    // Generate base polygon and store its points into array
-    const basePolygonPoints = generateBasePolygon(baseParams);
-    const dilutionPolygonPoints = generateBasePolygon(dilutionParams);
 
-    // Draw base polygon with variation
-    for(let i=0; i<100; i++) {
-        const polygonPoints = generateVariancePolygon(basePolygonPoints, baseParams.details, baseParams.spread);
-        draw(ctx, polygonPoints, baseParams.color);
-        
-        if (i<=dilutionParams.dilution) {
-            const dilutionPolygon = generateVariancePolygon(dilutionPolygonPoints, dilutionParams.details, dilutionParams.spread);
-            draw(ctx, dilutionPolygon, dilutionParams.color);
-        }        
+function drawLayer(index, polygonLayer) {
+    const baseLayer =  polygonLayer.baseLayer;
+    const dilutionLayer =  polygonLayer.dilutionLayer;
+    const basePolygonPoints =  polygonLayer.basePolygonPoints;
+    const dilutionPolygonPoints =  polygonLayer.dilutionPolygonPoints;
+
+    const polygonPoints = generateVariancePolygon(basePolygonPoints, baseLayer.details, baseLayer.spread);
+    draw(baseLayer.ctx, polygonPoints, baseLayer.color);
+
+    if (index<=dilutionLayer.dilution) {
+        const dilutionPolygon = generateVariancePolygon(dilutionPolygonPoints, dilutionLayer.details, dilutionLayer.spread);
+        draw(baseLayer.ctx, dilutionPolygon, dilutionLayer.color);
     }
 }
 
