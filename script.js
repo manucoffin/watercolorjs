@@ -5,33 +5,36 @@ function refreshCanvas(baseParams) {
     const ctx = baseParams.ctx;
 
     ctx.clearRect(-canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
-    
+
+    let dilutionParams = {
+        ctx: ctx,
+        canvas: canvas,
+        radius: baseParams.radius * .97,
+        sides: baseParams.sides,
+        rotateAngle: baseParams.rotateAngle,
+        offset: baseParams.offset,
+        randomNumbers: baseParams.randomNumbers,
+        pointsBetweenSummits: baseParams.pointsBetweenSummits,
+        regularity: 10,
+        spread: 10,
+        details: 10,
+        color: 'rgba(255, 255, 255, .01)',
+        dilution: baseParams.dilution
+    }
 
     // Generate base polygon and store its points into array
     const basePolygonPoints = generateBasePolygon(baseParams);
+    const dilutionPolygonPoints = generateBasePolygon(dilutionParams);
 
     // Draw base polygon with variation
     for(let i=0; i<100; i++) {
         const polygonPoints = generateVariancePolygon(basePolygonPoints, baseParams.details, baseParams.spread);
-
-        // ((i) => {
-        //     setTimeout( () => {
-                draw(ctx, polygonPoints, baseParams.color);
-            // }, 20*i);
-        // })(i);
-
-        // const rdmX = (Math.floor(Math.random() * 2) - 1) * Math.random()*2;
-        // const rdmY = (Math.floor(Math.random() * 2) - 1) * Math.random()*2;
-        // ctx.translate(rdmX, rdmY);
-    }
-
-    baseParams.color = 'rgba(255, 255, 255, .01)';
-    baseParams.radius *= .8;
-    const basePolygonPoints2 = generateBasePolygon(baseParams);
-
-    for(let i=0; i<70; i++) {
-        const polygonPoints = generateVariancePolygon(basePolygonPoints2, baseParams.details, baseParams.spread);
         draw(ctx, polygonPoints, baseParams.color);
+        
+        if (i<=dilutionParams.dilution) {
+            const dilutionPolygon = generateVariancePolygon(dilutionPolygonPoints, dilutionParams.details, dilutionParams.spread);
+            draw(ctx, dilutionPolygon, dilutionParams.color);
+        }        
     }
 }
 
