@@ -32,7 +32,7 @@ function refreshCanvas(ctx, canvas, stains) {
             }
 
             for(let i=0; i<5; i++) {
-                drawLayer(i, polygonLayer)
+                drawLayer(i*k, polygonLayer)
             }
 
             ctx.translate(-stain.origin.x, -stain.origin.y);
